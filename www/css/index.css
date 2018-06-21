@@ -20,38 +20,47 @@ h1 {
     margin: auto;
     font-size: 30px;
    background-color: green;
+   border: 1px solid black;
   }
 
-  #dummyAlarm {
-    width: 100%;
-    height: 20px;
-    background-color: aqua;
+  input[type=checkbox] {
+    transform: scale(3);
+    -ms-transform: scale(3);
+    -webkit-transform: scale(3);
   }
   
   .timewrapper {
     float: left;
     width: 55%;
+    height: 40px;
     /*border: 1px solid white;*/
     background-color: blue;
   }
   
   .checkboxwrapper {
+    text-align: center;
     float: left;
     width: 15%;
+    height: 40px;
     background-color: red;
     /*border: 1px solid white;*/
   }
   
   .modewrapper {
+    text-align: center;
     float: left;
     width: 15%;
+    height: 40px;
     background-color: yellow;
   }
   
   .deletewrapper {
+    text-align: center;
     float: left;
     width: 15%;
+    height: 40px;
     background-color: grey;
+    padding-top: 2px;
   }
   
   #addAlarmBtn {
@@ -61,4 +70,13 @@ h1 {
     background-color: #27586b;
     width: 150px;
     height: 50px;
+    padding: none;
+  }
+
+  .deleteAlarmBtn {
+    text-align: center;
+    padding-bottom: 2px;
+    height: 35px;
+    width: 37px;
+    font-size: 30px;
   }

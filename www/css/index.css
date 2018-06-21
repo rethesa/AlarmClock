@@ -6,6 +6,12 @@ h1 {
   body {
     background-color: #9dcadb;
   }
+
+  .alarms {
+    width: 100%;
+    height: 100px;
+    background-color: #0e3443;
+  }
   
   .alarm {
    position: relative;
@@ -14,6 +20,12 @@ h1 {
     margin: auto;
     font-size: 30px;
    background-color: green;
+  }
+
+  #dummyAlarm {
+    width: 100%;
+    height: 20px;
+    background-color: aqua;
   }
   
   .timewrapper {

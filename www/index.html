@@ -23,9 +23,9 @@
     <br>
 
     <div class="alarms" id="alarms">
-        <div class="alarm">
+        <div class="alarm" id="alarm1">
             <div class="timewrapper" id="timewrapper1">
-                07:00
+                07:45
             </div>
             <div class="checkboxwrapper" id="checkboxwrapper1">
                 <input type="checkbox" id="alarmChecked1" onclick="setAlarmCheckbox(1, '07:00' )" >
@@ -37,8 +37,8 @@
                 <button id="deleteAlarmBtn1" onclick="deleteAlarm(1)"> X </button>
             </div>
         </div>
-        <div id="dummyAlarm">    
-        </div>   
+        <!--<div class="alarm" id="dummyAlarm">    
+        </div>-->   
     </div>
 
     <script>
@@ -57,6 +57,7 @@
     function addAlarm(time) {
         console.log("call addAlarm time= " + time + " id =" + id);
         if(time != "") {
+            
             var timewrapperID = "timewrapper" + id;
             var checkboxwrapperID = "checkboxwrapper" + id;
             var modewrapperID = "modewrapper" + id;
@@ -70,23 +71,43 @@
             var newTime = '<div class="timewrapper" id="' + timewrapperID + '">' + time + '</div>';
             var newCheckbox = '<div class="checkboxwrapper" id="' + checkboxwrapperID + '"><input type="checkbox" id="' + alarmCheckedID + '" onclick="setAlarmCheckbox(' + id + ', ' +  timestr + ')"></div>';
             var newMode = '<div class="modewrapper" id="' + modewrapperID + '"><button id="' + chooseAlarmModeID + '"> V </button></div>';
-            var newDelete = '<div class="deletewrapper" id="' + deletewrapperID + '"><button id="' + deleteAlarmBtnID + '"> X </button></div>';
+            var newDelete = '<div class="deletewrapper" id="' + deletewrapperID + '"><button id="' + deleteAlarmBtnID + '" onclick="deleteAlarm(' + id + ')"> X </button></div>';
+            
+            console.log("aaa");
+            var boxes = [id];
+            //wenn alarm überhaupt noch existiert
+            console.log("bbb");
+            for (j = 1;j < id; j++) {
+    	        boxes[j] = document.getElementById("alarmChecked" + j).checked;
+            }
+            console.log("ccc");
+            document.getElementById("alarms").innerHTML += '<div class="alarm" id="alarm' + id + '">' + newTime + newCheckbox + newMode + newDelete + '</div>';
+            console.log("ddd")
+            for (j = 1;j < id; j++) {
+    	        document.getElementById("alarmChecked" + j).checked = boxes[j];
+            }
+            console.log("after");
 
+            /*
             var dummy = document.getElementById("dummyAlarm");
             dummy.id = "alarm" + id;
-            dummy.innerHTML = '<div class="alarm">' + newTime + newCheckbox + newMode + newDelete + '</div>' + '<div id="dummyAlarm"></div>';
+            dummy.innerHTML = '</div>' + newTime + newCheckbox + newMode + newDelete + '<div id="dummyAlarm"></div>';
+            console.log("eee");*/
+
             id++;
         }
     }
 
     function deleteAlarm(id) {
-        console.log("call deleteAlarm" + id);
-
+        console.log("call deleteAlarm " + id);
+        var alarm = document.getElementById("alarm"+id);
+        alarm.innerHTML = null;
     }
 
     function setAlarmCheckbox(id, time) {
         console.log("call setAlarmCheckbox, id= " + id  + " time " + time);
         var checkbox = document.getElementById("alarmChecked"+id);
+        console.log("test");
         console.log("checkbox.checked = " + checkbox.checked);
         if (checkbox.checked == true){
             console.log("checkbox is set");

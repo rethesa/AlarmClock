@@ -59,14 +59,15 @@ h1 {
     float: left;
     width: 15%;
     height: 40px;
-    background-color: grey;
-    padding-top: 2px;
+    background-color: rgb(18, 150, 190);
+    padding-top: 2px; 
   }
   
   #addAlarmBtn {
     color: #9dcadb;
     border-color: #4d7f92;
     font-size: 20px;
+    font-weight: 900;
     background-color: #27586b;
     width: 150px;
     height: 50px;
@@ -75,8 +76,13 @@ h1 {
 
   .deleteAlarmBtn {
     text-align: center;
-    padding-bottom: 2px;
-    height: 35px;
+    color: red;
+    height: 38px;
     width: 37px;
     font-size: 30px;
+    text-shadow: 1px 0;
+    font-weight: bold;
+    border-radius: 7px;
+    border: 3px solid #a0aaa7;
+    background-color:  #d6e2e1;
   }

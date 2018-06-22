@@ -18,29 +18,35 @@
     <script type="text/javascript" src="js/index.js"></script>
 
     <button id="addAlarmBtn"> + new Alarm</button>
-    <input id="timeInput" style="width: 100px; height:30px; padding:0px; margin:0px" type="time" value="07:30"/>
+    <input id="timeInput" style="width: 1px; height:1px; padding:0px; margin:0px; border-color: #9dcadb" type="time" value="07:30"/>
     <br>
 
-    <div class="alarms" id="alarms">
-        <div class="alarm" id="alarm1">
-            <div class="timewrapper" id="timewrapper1">
-                14:35
-            </div>
-            <div class="checkboxwrapper" id="checkboxwrapper1">
-                <input type="checkbox" id="alarmChecked1" onclick="setAlarmCheckbox(1, '14:35' )" >
-            </div>
-            <div class="modewrapper" id="modewrapper1">
-                <button id="chooseAlarmMode1"> V </button>
-            </div>
-            <div class="deletewrapper" id="deletewrapper1">
-                <button class="deleteAlarmBtn" id="deleteAlarmBtn1" onclick="deleteAlarm(1)"> X </button>
+    <div class="body">
+        <div class="alarms" id="alarms">
+            <!--<div class="alarm" id="alarm1">
+                <div class="timewrapper" id="timewrapper1">
+                    19:28
+                </div>
+                <div class="checkboxwrapper" id="checkboxwrapper1">
+                    <input type="checkbox" id="alarmChecked1" onclick="setAlarmCheckbox(1, '19:28' )" >
+                </div>
+                <div class="modewrapper" id="modewrapper1">
+                    <button id="chooseAlarmMode1"> V </button>
+                </div>
+                <div class="deletewrapper" id="deletewrapper1">
+                    <button class="deleteAlarmBtn" id="deleteAlarmBtn1" onclick="deleteAlarm(1)"> X </button>
+                </div>
+            </div>  -->
+
+            <div class="alert">
+                <center><p id = "popupText"></p></center>
+                <button class="ok" onclick="popupButtonPressed()">OK</button>
             </div>
         </div>
-        
-        <!--<div class="alarm" id="dummyAlarm">    
-        </div> -->
     </div>
-
+    <div id="debug">    
+    </div>
+    
     <script type="text/javascript">
     var id = 5;
     var timeValue = 0;
@@ -110,12 +116,11 @@
             var timeArray = getTimeToAlarm(alarmHours, date.getHours(), alarmMinutes, date.getMinutes());
             var hours = timeArray[0];
             var minutes = timeArray[1];
+
             console.log("alert alarm rings in ....");
             alert("Alarm rings in " + hours + " hours and " + minutes + " minutes.");
             console.log("after alert and before method fireAlarmIn")
-            
             fireAlarmIn(hours, minutes, date.getSeconds(), id);
-           
         } else {
             console.log("checkbox is unset");
             //TODO unset alarm
@@ -130,8 +135,7 @@
         console.log("setTimeout ");
         alarmTimer = setTimeout( function() { 
             if(document.getElementById("alarmChecked"+id).checked) {
-                alert("ALARM RINGS");
-                connect();
+                startVibrationMode();
             } else {
                 console.log("reseted alarm");
             }

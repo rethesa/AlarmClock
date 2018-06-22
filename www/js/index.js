@@ -1,4 +1,4 @@
- /*var SERVICE_UUID = "713d0000-503e-4c75-ba94-3148f18d941e";
+ var SERVICE_UUID = "713d0000-503e-4c75-ba94-3148f18d941e";
  var CHAR_NUM_MOTORS = "713d0001-503e-4c75-ba94-3148f18d941e";
  var CHAR_MAX_UPDATE_FREQ = "713d0002-503e-4c75-ba94-3148f18d941e";
  var CHAR_WRITE_MOTORS = "713d0003-503e-4c75-ba94-3148f18d941e";
@@ -16,21 +16,20 @@
              deviceID = device.id;
              ble.connect(device.id, function(event) {
                  found = true;
+                 alert("start motor");
                  startMotor(1, 125);
 
              }, function(e) {
                  found = false;
                  print("BLE CON-ERROR: " + e.message);
-                 alert("Connecting failed!");
              });
          }
      }, function() {
          found = false;
          print("Device not found");
+         reconnectLoop();
      });
  }
- connect();
-
 
  function startMotor(motorIndex, intensity) {
 
@@ -63,7 +62,6 @@
          console.log(str);
      }
  }
- reconnectLoop();*/
 
 
 

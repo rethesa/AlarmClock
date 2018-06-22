@@ -3,14 +3,13 @@
 
 <head>
     <meta charset="utf-8" />
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <meta name="format-detection" content="telephone=yes" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <title>Alarm Clock</title>
-     <link rel="stylesheet" type="text/css" href="css/index.css">
-     <script src="jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 
 <body>
@@ -19,16 +18,16 @@
     <script type="text/javascript" src="js/index.js"></script>
 
     <button id="addAlarmBtn"> + new Alarm</button>
-    <input id="timeInput" style="width: 0px; height:0px; padding:0px; margin:0px" type="time" value="07:30"/>
+    <input id="timeInput" style="width: 100px; height:30px; padding:0px; margin:0px" type="time" value="07:30"/>
     <br>
 
     <div class="alarms" id="alarms">
-        <!--<div class="alarm" id="alarm1">
+        <div class="alarm" id="alarm1">
             <div class="timewrapper" id="timewrapper1">
-                07:45
+                14:35
             </div>
             <div class="checkboxwrapper" id="checkboxwrapper1">
-                <input type="checkbox" id="alarmChecked1" onclick="setAlarmCheckbox(1, '07:00' )" >
+                <input type="checkbox" id="alarmChecked1" onclick="setAlarmCheckbox(1, '14:35' )" >
             </div>
             <div class="modewrapper" id="modewrapper1">
                 <button id="chooseAlarmMode1"> V </button>
@@ -37,12 +36,13 @@
                 <button class="deleteAlarmBtn" id="deleteAlarmBtn1" onclick="deleteAlarm(1)"> X </button>
             </div>
         </div>
-        <div class="alarm" id="dummyAlarm">    
+        
+        <!--<div class="alarm" id="dummyAlarm">    
         </div> -->
     </div>
 
-    <script>
-    var id = 1;
+    <script type="text/javascript">
+    var id = 5;
     var timeValue = 0;
 
     document.getElementById("addAlarmBtn").onclick = function() {
@@ -73,32 +73,19 @@
             var newMode = '<div class="modewrapper" id="' + modewrapperID + '"><button id="' + chooseAlarmModeID + '"> V </button></div>';
             var newDelete = '<div class="deletewrapper" id="' + deletewrapperID + '"><button class="deleteAlarmBtn" id="' + deleteAlarmBtnID + '" onclick="deleteAlarm(' + id + ')"> X </button></div>';
             
-            console.log("aaa");
             var boxes = [id];
-            //wenn alarm überhaupt noch existiert
-            console.log("bbb");
             for (j = 1;j < id; j++) {
     	        if (document.getElementById("alarmChecked" + j)) {
                     boxes[j] = document.getElementById("alarmChecked" + j).checked;
                 }
             }
             console.log(boxes);
-            console.log("ccc");
             document.getElementById("alarms").innerHTML += '<div class="alarm" id="alarm' + id + '">' + newTime + newCheckbox + newMode + newDelete + '</div>';
-            console.log("ddd")
             for (j = 1;j < id; j++) {
     	        if (document.getElementById("alarmChecked" + j)) {
     		        document.getElementById("alarmChecked" + j).checked = boxes[j];
                 }
             }
-            console.log("after");
-
-            /*
-            var dummy = document.getElementById("dummyAlarm");
-            dummy.id = "alarm" + id;
-            dummy.innerHTML = '</div>' + newTime + newCheckbox + newMode + newDelete + '<div id="dummyAlarm"></div>';
-            console.log("eee");*/
-
             id++;
         }
     }
@@ -107,7 +94,6 @@
         console.log("call deleteAlarm " + id);
         var alarm = document.getElementById("alarm"+id);
         alarm.parentNode.removeChild(alarm);
-        //alarm.innerHTML = "";
     }
 
     function setAlarmCheckbox(id, time) {
@@ -117,39 +103,60 @@
         console.log("checkbox.checked = " + checkbox.checked);
         if (checkbox.checked == true){
             console.log("checkbox is set");
-            //TODO set alarm for vibration --> when time == alarm time
-
-            //user output
             var res = time.split(":");
             var alarmHours = parseInt(res[0]);
             var alarmMinutes = parseInt(res[1]);
             var date = new Date();
-            alert(getTimeToAlamr(alarmHours, date.getHours(), alarmMinutes, date.getMinutes()) );
+            var timeArray = getTimeToAlarm(alarmHours, date.getHours(), alarmMinutes, date.getMinutes());
+            var hours = timeArray[0];
+            var minutes = timeArray[1];
+            console.log("alert alarm rings in ....");
+            alert("Alarm rings in " + hours + " hours and " + minutes + " minutes.");
+            console.log("after alert and before method fireAlarmIn")
+            
+            fireAlarmIn(hours, minutes, date.getSeconds(), id);
+           
         } else {
             console.log("checkbox is unset");
             //TODO unset alarm
         }
     }
 
-    function getTimeToAlamr(alarmHours, actualHours, alarmMinutes, actualMinutes) {
-        var min;
-        var hour;
-        if(alarmMinutes >= actualMinutes) {
-            min = alarmMinutes - actualMinutes;
-            if (alarmHours >= actualHours) {
-                hour = alarmHours - actualHours;
+    function fireAlarmIn(hours, minutes, actualSeconds, id) {
+        console.log("Call fireAlarmIn")
+        hoursInMilliseconds = hours * 60 * 60 * 1000;
+        minutesInMilliseconds = minutes * 60 * 1000;
+        actualSecondsInMilliseconds = actualSeconds * 1000;
+        console.log("setTimeout ");
+        alarmTimer = setTimeout( function() { 
+            if(document.getElementById("alarmChecked"+id).checked) {
+                alert("ALARM RINGS");
+                connect();
             } else {
-                hour = 24 - (actualHours -  alarmHours);
+                console.log("reseted alarm");
+            }
+            }, hoursInMilliseconds + minutesInMilliseconds - actualSecondsInMilliseconds);
+    }
+
+    function getTimeToAlarm(alarmHours, actualHours, alarmMinutes, actualMinutes) {
+        var minutes;
+        var hours;
+        if(alarmMinutes >= actualMinutes) {
+            minutes = alarmMinutes - actualMinutes;
+            if (alarmHours >= actualHours) {
+                hours = alarmHours - actualHours;
+            } else {
+                hours = 24 - (actualHours -  alarmHours);
             }
         } else {
-            min = 60 - (actualMinutes - alarmMinutes);
+            minutes = 60 - (actualMinutes - alarmMinutes);
             if (alarmHours > actualHours) {
-                hour = alarmHours - actualHours - 1;
+                hours = alarmHours - actualHours - 1;
             } else {
-                hour = 24 - (actualHours -  alarmHours) - 1;
+                hours = 24 - (actualHours -  alarmHours) - 1;
             }
         }
-        return "Alarm rings in " + hour + " hours and " + min + " minutes.";
+        return [hours, minutes];
     }
 
 </script>
@@ -157,52 +164,4 @@
 
 </html>
 
-
-
-<!--<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8" />
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <meta name="format-detection" content="telephone=yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
-    />
-    <title>12Swipese</title>
-    <style type="text/css">
-    </style>
-</head>
-
-<body>
-    Hello World
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script>
-    </script>
-</body>
-
-</html> 
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>Alarm Clock</title>
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-    </head>
-    <body>
-        <script src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-
-        <h1>Alarm Clock</h1>
-
-        <div data-role="content" class="ui-content">
-            <button class="ui-btn ui-shadow" onclick="scanAndConnect();">Scan and Connect</button> 
-        </div>
-
-    </body>
-</html>-->
 

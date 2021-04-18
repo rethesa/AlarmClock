@@ -2,7 +2,7 @@
 
 PhoneGap app that connects via bluetooth to multiple small vibrating devices. This app is a basic implementation of an alarm clock. When the added alarm goes down the connected devices start vibrating. The vibrating intesity increases as time passes till the alarm is put off.
 
-![Image of the Game](AlarmClockImage.png =250x)
+![Image of the Game](AlarmClockImage.png)
 
 ## Usage
 
